@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { searchTrendMovie } from 'services/Api';
-import TrendMoviesList from 'components/TrendMoviesList/TrendMoviesList';
+import { getTrendMovie } from 'services/Api';
+import MoviesList from 'components/MoviesList/MoviesList';
 
 export default function TrendMovies() {
   const [movies, setMovies] = useState([]);
@@ -11,7 +11,7 @@ export default function TrendMovies() {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        const data = await searchTrendMovie();
+        const data = await getTrendMovie();
 
         // setMovies(prevMovies => [...prevMovies, ...data.results]);
         setMovies([...data.results]);
@@ -28,7 +28,7 @@ export default function TrendMovies() {
     <div>
       <h2>Trending day movies</h2>
       {loading && <p>Loading...</p>}
-      {Boolean(movies.length) && <TrendMoviesList items={movies} />}
+      {Boolean(movies.length) && <MoviesList items={movies} />}
       {error && <p>Sorry! Something went wrong</p>}
     </div>
   );
