@@ -24,7 +24,7 @@ export default function SearchBar({ onSubmit }) {
         placeholder="Enter value"
         onChange={handleChange}
       ></input>
-      <button type="button"></button>
+      <button type="submit">Search</button>
     </form>
   );
 }
