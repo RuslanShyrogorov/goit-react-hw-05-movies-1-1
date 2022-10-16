@@ -1,3 +1,4 @@
+import { Box } from 'constants/Box';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieRewiews } from 'services/Api';
@@ -34,10 +35,10 @@ export default function ReviewsPage() {
           <ul>
             {reviews.map(({ id, author, content }) => {
               return (
-                <li key={id}>
+                <Box as="li" mt="8px" key={id}>
                   <h4>Author: {author}</h4>
                   <p>{content}</p>
-                </li>
+                </Box>
               );
             })}
           </ul>

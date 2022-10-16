@@ -1,6 +1,8 @@
+import { Box } from 'constants/Box';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieCast } from 'services/Api';
+import { Img } from './CastPage.styled';
 
 export default function CastPage() {
   const [cast, setCast] = useState([]);
@@ -26,16 +28,22 @@ export default function CastPage() {
   }, [id]);
 
   return (
-    <div>
+    <Box>
       {loading && <p>Loading ...</p>}
       {error && <p>Something went wrong</p>}
       {cast && (
-        <div>
-          <ul>
+        <Box>
+          <Box
+            as="ul"
+            display="grid"
+            gridTemplateColumns="repeat(4, 1fr)"
+            gridGap={4}
+            mt="8px"
+          >
             {cast.map(({ name, id, profile_path, character }) => {
               return (
                 <li key={id}>
-                  <img
+                  <Img
                     src={
                       profile_path
                         ? `https://image.tmdb.org/t/p/w500${profile_path}`
@@ -50,9 +58,9 @@ export default function CastPage() {
                 </li>
               );
             })}
-          </ul>
-        </div>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

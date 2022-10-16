@@ -1,6 +1,16 @@
+import { Box } from 'constants/Box';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link, Outlet } from 'react-router-dom';
+import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import { getMovieId } from 'services/Api';
+import {
+  AdditionalLink,
+  MovieTitle,
+  Text,
+  Title,
+  AdditionalTitle,
+  Span,
+  CardImg,
+} from './MovieInfoPage.styled';
 
 export default function MovieInfoPage() {
   const [movie, setMovie] = useState([]);
@@ -9,6 +19,12 @@ export default function MovieInfoPage() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const imagePath = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    : 'https://w7.pngwing.com/pngs/772/172/png-transparent-film-cinema-television-android.png';
+  const genres = movie.genres?.map(genre => (
+    <Span key={genre.id}>{genre.name} </Span>
+  ));
 
   useEffect(() => {
     const fetchMovieId = async () => {
@@ -28,32 +44,34 @@ export default function MovieInfoPage() {
   const goBack = () => navigate(-1);
 
   return (
-    <>
+    <Box as="section" backgroundColor="white" widh="100%" p="8px">
       <button type="button" onClick={goBack}>
         Back
       </button>
       {loading && <p>Loading ...</p>}
       {error && <p>Something went wromg</p>}
       {movie && (
-        <div>
-          <img src={movie.srcPath} alt="" widh="100%" />
+        <Box>
+          <Box display="flex" mt="8px" mb="8px">
+            <CardImg src={imagePath} alt="" />
+            <Box p="16px">
+              <MovieTitle>{movie.title}</MovieTitle>
+              <Title>
+                User score: <Span>{Math.round(movie.vote_average * 10)}%</Span>
+              </Title>
+              <Title>Overview</Title>
+              <Text>{movie.overview}</Text>
+              <Title>Genres: {genres}</Title>
+            </Box>
+          </Box>
           <div>
-            <h2>{movie.title}</h2>
-            <p>
-              User score: <span>{Math.round(movie.vote_average * 10)}%</span>
-            </p>
-            <h3>Overview</h3>
-            <p>{movie.overview}</p>
-            <h3>Genres</h3>
-          </div>
-          <div>
-            <h3>Additional information</h3>
-            <Link to={'cast'}>Cast</Link>
-            <Link to={'reviews'}>Reviews</Link>
+            <AdditionalTitle>Additional information</AdditionalTitle>
+            <AdditionalLink to={'cast'}>Cast</AdditionalLink>
+            <AdditionalLink to={'reviews'}>Reviews</AdditionalLink>
             <Outlet />
           </div>
-        </div>
+        </Box>
       )}
-    </>
+    </Box>
   );
 }

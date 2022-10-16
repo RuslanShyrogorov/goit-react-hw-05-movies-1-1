@@ -1,6 +1,9 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
 import { nanoid } from 'nanoid';
+
+import { Box } from 'constants/Box';
+import { NavBtn, ListItem } from './LayoutHeader.styled';
 
 const navItems = [
   {
@@ -17,17 +20,27 @@ const navItems = [
 
 export default function LayoutHeader() {
   const navBtns = navItems.map(({ id, to, text }) => (
-    <li key={id}>
-      <Link to={to}>{text}</Link>
-    </li>
+    <ListItem key={id}>
+      <NavBtn to={to} end>
+        {text}
+      </NavBtn>
+    </ListItem>
   ));
 
   return (
-    <header>
-      <ul>{navBtns}</ul>
+    <Box
+      display="grid"
+      gridTemplateRow="250px 1fr"
+      as="header"
+      width="100vw"
+      mb={3}
+      backgroundColor="muted"
+      pt={3}
+    >
+      <Box display="flex">{navBtns}</Box>
       <Suspense fallback={<div>Loading page...</div>}>
         <Outlet />
       </Suspense>
-    </header>
+    </Box>
   );
 }
