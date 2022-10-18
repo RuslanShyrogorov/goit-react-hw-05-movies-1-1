@@ -1,6 +1,6 @@
 import { Box } from 'constants/Box';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Outlet } from 'react-router-dom';
+import { useParams, Outlet, useLocation } from 'react-router-dom';
 import { getMovieId } from 'services/Api';
 import {
   AdditionalLink,
@@ -16,9 +16,20 @@ export default function MovieInfoPage() {
   const [movie, setMovie] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const location = useLocation();
+
+  console.log('location: ', location.pathname);
 
   const { id } = useParams();
-  const navigate = useNavigate();
+
+  const castOnPage = location.pathname.includes('cast');
+  const castLink = castOnPage ? `/movies/${id}` : `/movies/${id}/cast`;
+
+  const reviewsOnPage = location.pathname.includes('reviews');
+  const reviewsLink = reviewsOnPage ? `/movies/${id}` : `/movies/${id}/reviews`;
+
+  const from = location.state?.from || '/movies';
+
   const imagePath = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : 'https://w7.pngwing.com/pngs/772/172/png-transparent-film-cinema-television-android.png';
@@ -30,6 +41,7 @@ export default function MovieInfoPage() {
     const fetchMovieId = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await getMovieId(id);
         setMovie(data);
       } catch (error) {
@@ -41,13 +53,12 @@ export default function MovieInfoPage() {
     fetchMovieId();
   }, [id]);
 
-  const goBack = () => navigate(-1);
+  // const goBack = () => navigate(-1);
 
   return (
     <Box as="section" backgroundColor="white" widh="100%" p="8px">
-      <button type="button" onClick={goBack}>
-        Back
-      </button>
+      {/* <Link type="button" onClick={goBack}> */}
+      <AdditionalLink to={location.state.from}>Go back</AdditionalLink>
       {loading && <p>Loading ...</p>}
       {error && <p>Something went wromg</p>}
       {movie && (
@@ -66,8 +77,12 @@ export default function MovieInfoPage() {
           </Box>
           <div>
             <AdditionalTitle>Additional information</AdditionalTitle>
-            <AdditionalLink to={'cast'}>Cast</AdditionalLink>
-            <AdditionalLink to={'reviews'}>Reviews</AdditionalLink>
+            <AdditionalLink state={{ from }} to={castLink}>
+              Cast
+            </AdditionalLink>
+            <AdditionalLink state={{ from }} to={reviewsLink}>
+              Reviews
+            </AdditionalLink>
             <Outlet />
           </div>
         </Box>

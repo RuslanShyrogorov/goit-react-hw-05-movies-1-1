@@ -12,6 +12,7 @@ export default function TrendMovies() {
     const fetchMovies = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await getTrendMovie();
 
         // setMovies(prevMovies => [...prevMovies, ...data.results]);

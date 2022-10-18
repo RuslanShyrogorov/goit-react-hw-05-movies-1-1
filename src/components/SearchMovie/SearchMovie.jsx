@@ -19,6 +19,7 @@ export default function SearchMovie() {
     const fetchQuery = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await getQueryMovie(query);
         setMovies([...data.results]);
       } catch (error) {

@@ -14,6 +14,7 @@ export default function ReviewsPage() {
     const fetchReviews = async () => {
       try {
         setLoading(true);
+        setError(null);
         const data = await getMovieRewiews(id);
         setReviews(data.results);
       } catch (error) {
