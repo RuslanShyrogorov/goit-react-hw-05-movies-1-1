@@ -7,7 +7,7 @@ export default function SearchBar({ onSubmit }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const movieQuery = searchParams.get('movies') || '';
-  // console.log('movieQuery: ', movieQuery);
+  console.log('movieQuery: ', movieQuery);
 
   const handleChange = e => {
     setQuery(e.target.value);
