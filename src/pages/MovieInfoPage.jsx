@@ -1,6 +1,6 @@
 import { Box } from 'constants/Box';
 import { useState, useEffect } from 'react';
-import { useParams, Outlet, useLocation } from 'react-router-dom';
+import { useParams, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getMovieId } from 'services/Api';
 import {
   AdditionalLink,
@@ -17,8 +17,9 @@ export default function MovieInfoPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  console.log('location: ', location.pathname);
+  // console.log('location: ', location.pathname);
 
   const { id } = useParams();
 
@@ -57,8 +58,13 @@ export default function MovieInfoPage() {
 
   return (
     <Box as="section" backgroundColor="white" widh="100%" p="8px">
-      {/* <Link type="button" onClick={goBack}> */}
-      <AdditionalLink to={location.state.from}>Go back</AdditionalLink>
+      <AdditionalLink
+        type="button"
+        onClick={() => navigate(location.state.from)}
+      >
+        Go back
+      </AdditionalLink>
+      {/* <AdditionalLink to={location.state.from}>Go back</AdditionalLink> */}
       {loading && <p>Loading ...</p>}
       {error && <p>Something went wromg</p>}
       {movie && (
