@@ -29,9 +29,9 @@ export default function LayoutHeader() {
 
   return (
     <Box
+      as="header"
       display="grid"
       gridTemplateRow="250px 1fr"
-      as="header"
       width="100vw"
       mb={3}
       backgroundColor="muted"

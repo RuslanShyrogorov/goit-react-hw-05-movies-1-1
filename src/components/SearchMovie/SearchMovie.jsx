@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { getQueryMovie } from 'services/Api';
-
 import MoviesList from 'components/MoviesList/MoviesList';
 import SearchBar from 'components/SearchBar/SearchBar';
 
@@ -9,7 +8,6 @@ export default function SearchMovie() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const onQuery = query => {
     setQuery(query);
     setMovies([]);
